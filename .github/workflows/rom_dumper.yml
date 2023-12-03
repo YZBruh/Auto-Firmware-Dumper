@@ -1,0 +1,156 @@
+name: Auto Firmware Dumper
+
+on:
+  workflow_dispatch:
+    inputs:
+      FIRMWARE_URL:
+        description: 'Stock ROM Link'
+        required: true
+        default: ''
+      DEVICE_BRAND:
+        description: 'Device brand (Like xiaomi)'
+        required: true
+        default: ''
+      DEVICE_CODENAME:
+        description: 'Device codename (Like gingko)'
+        required: true
+        default: ''
+      UPLOAD_LINEAGE_DT:
+        description: 'Create LineageOS DT Repo'
+        required: true
+        default: ''
+        type: choice
+        options:
+        - Okay
+        - I do not want
+      UPLOAD_TWRP_DT:
+        description: 'Create TWRP DT Repo'
+        required: true
+        default: ''
+        type: choice
+        options:
+        - Okay
+        - I do not want
+      USER_NAME:
+        description: 'Name in GitHub Account'
+        required: true
+        default: ''
+      USER_EMAIL:
+        description: 'E-mail in GitHub Account'
+        required: true
+        default: ''
+
+jobs:
+  build:
+    name: Auto Firmware Dumper
+    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GTOKEN }}
+      TWT: ${{ github.event.inputs.UPLOAD_TWRP_DT }}
+      LOT: ${{ github.event.inputs.UPLOAD_LINEAGE_DT }}
+      DB: ${{ github.event.inputs.DEVICE_BRAND }}
+      DC: ${{ github.event.inputs.DEVICE_CODENAME}}
+      FUR: ${{ github.event.inputs.FIRMWARE_URL }}
+      UN: ${{ github.event.inputs.USER_NAME }}
+      UEM: ${{ github.event.inputs.USER_EMAIL }}
+    permissions:
+      contents: write
+    steps:
+    - name: Check Out
+      uses: actions/checkout@v3
+      
+    - name: Cleanup
+      uses: rokibhasansagar/slimhub_actions@main
+      
+    - name: Set Swap Space
+      uses: pierotofy/set-swap-space@master
+      with:
+       swap-size-gb: 12
+        
+    - name: Update Packages
+      run: |
+        sudo apt update
+        sudo apt -y upgrade
+        sudo apt -y install cpio aria2 git python3 neofetch
+
+    - name: Setup GithubCLI
+      run: |
+        type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+        && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+        && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+        && sudo apt update \
+        && sudo apt install gh -y
+
+    - name: Clone and Setup DumprX
+      run: |
+        cd /home
+        sudo mkdir Auto-Dumper
+        sudo chmod 777 Auto-Dumper
+        cd Auto-Dumper
+        git clone https://github.com/DumprX/DumprX
+        cd DumprX
+        sudo chmod 777 setup.sh
+        sudo chmod 777 dumper.sh
+        bash setup.sh
+
+    - name: Creating Dump
+      run: |
+        cd /home/Auto-Dumper/DumprX
+        get_link=$(echo "${{ env.FUR }}")
+        wget https://raw.githubusercontent.com/YZBruh/Auto-Firmware-Dumper/master/scripts/dump_and_smfirm.sh
+        chmod 777 dump_and_smfirm.sh
+        bash dump_and_smfirm.sh
+        unset get_link
+        sudo chmod -R 777 out
+
+    - name: Setting up git
+      run: |
+        git config --global user.name "${{ env.UN }}" && git config --global user.email "${{ env.UEM }}"
+
+    - name: Uploading ROM Dump for GitHub Repository
+      run: |
+        cd /home/Auto-Dumper/DumprX/out
+        sudo chmod -R 777 *
+        dump_control=$(basename system)
+        if [ $dump_control -eq 0 ]; then
+           echo "Failed!";
+           cd /home/Auto-Dumper
+           sudo rm -rf DumprX
+           unset dump_control
+           exit 1;
+        fi;
+        unset dump_control
+        wget https://raw.githubusercontent.com/YZBruh/Auto-Firmware-Dumper/master/scripts/control_all_dt.sh
+        sudo chmod 777 control_all_dt.sh
+        bash control_all_dt.sh
+        sudo rm -rf control_all_dt.sh
+        sudo rm -rf .git
+        find /home/Auto-Dumper/DumprX/out -type f -size +100M -delete -exec echo "Deleted: "{} \;
+        git init
+        git branch -M dump-${{ env.DB }}
+        git add .
+        git commit -s -m "Dump for ${{ env.DB }} ${{ env.DC }}"
+        gh repo create dump_${{ env.DB }}_${{ env.DC }} --public --description="Dump for ${{ env.DB }} ${{ env.DC }}." --source=. --remote=origin --push
+        cd /home/Auto-Dumper
+        sudo rm -rf DumprX
+        get_codename=$(echo "${{ env.DC }}")
+        get_brand=$(echo "${{ env.DB }}")
+
+    - name: Uploading LineageOS Device Tree
+      if: |
+        env.TWT == 'Okay'
+      run: |
+        wget https://raw.githubusercontent.com/YZBruh/Auto-Firmware-Dumper/master/scripts/control_lineage_dt.sh
+        sudo chmod 777 control_lineage_dt.sh
+        bash control_lineage_dt.sh
+
+    - name: Uploading TWRP Device Tree
+      if: |
+        env.LOT == 'Okay'
+      run: |
+        cd /home/Auto-Dumper
+        wget https://raw.githubusercontent.com/YZBruh/Auto-Firmware-Dumper/master/scripts/control_twrp_dt.sh
+        sudo chmod 777 control_twrp_dt.sh
+        bash control_twrp_dt.sh
