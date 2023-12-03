@@ -114,7 +114,7 @@ jobs:
         cd /home/Auto-Dumper/DumprX/out
         sudo chmod -R 777 *
         dump_control=$(basename system)
-        if [ $dump_control -eq 0 ]; then
+        if [ ! -f "$dump_control" ]; then
            echo "Failed!";
            cd /home/Auto-Dumper
            sudo rm -rf DumprX
@@ -122,8 +122,20 @@ jobs:
            exit 1;
         fi;
         unset dump_control
-        cp -r twrp-device-tree /home/Auto-Dumper
-        cp -r lineage-device-tree /home/Auto-Dumper
+        los_control=$(basename lineage-device-tree)
+        if [ ! -f "$los_control" ]; then
+           echo "Lineage device tree not found!";
+           unset los_control
+        else
+           cp -r lineage-device-tree /home/Auto-Dumper
+        fi;
+        tw_control=$(basename twrp-device-tree)
+        if [ ! -f "$tw_control" ]; then
+           echo "TWRP device tree not found!";
+           unset tw_control
+        else
+           cp -r twrp-device-tree /home/Auto-Dumper
+        fi;
         wget https://raw.githubusercontent.com/YZBruh/Auto-Firmware-Dumper/master/scripts/control_all_dt.sh
         sudo chmod 777 control_all_dt.sh
         bash control_all_dt.sh
