@@ -11,7 +11,7 @@ unset create_dump
 
 # İnstall unpacker
 cd /home/Auto-Dumper
-wget
+wget https://github.com/YZBruh/Auto-Firmware-Dumper-/raw/master/sm_firmware_tool/SAMSUNG-SOFTWARE-UNPACKER-GENER%C4%B0C-1.0.0.zip
 unzip *.zip
 sudo chmod -R 777 *
 rm -rf *.zip
