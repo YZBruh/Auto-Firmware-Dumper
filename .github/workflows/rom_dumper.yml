@@ -122,9 +122,12 @@ jobs:
            exit 1;
         fi;
         unset dump_control
+        cp -r twrp-device-tree /home/Auto-Dumper
+        cp -r lineage-device-tree /home/Auto-Dumper
         wget https://raw.githubusercontent.com/YZBruh/Auto-Firmware-Dumper/master/scripts/control_all_dt.sh
         sudo chmod 777 control_all_dt.sh
         bash control_all_dt.sh
+        cd /home/Auto-Dumper/DumprX/out
         sudo rm -rf control_all_dt.sh
         sudo rm -rf .git
         find /home/Auto-Dumper/DumprX/out -type f -size +100M -delete -exec echo "Deleted: "{} \;
