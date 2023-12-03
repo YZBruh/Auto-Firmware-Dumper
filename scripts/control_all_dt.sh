@@ -3,23 +3,25 @@
 # By @YZBruh
 echo "Copying TWRP and LineageOS tree"
 # Checking and copying los dt
-check_los_dt=$(basename lineage-device-tree)
-if [ $check_los_dt -eq 0 ]; then
+cd /home/Auto-Dumper/DumprX/out && basename lineage-device-tree
+exit_code=$?
+if [ $exit_code -eq 0 ]; then
     cp -r lineage-device-tree /home/Auto-Dumper
-    unset check_los_dt
+    unset exit_code
 else
     echo "Lineage device tree not found!."
-    unset check_los_dt
+    unset exit_code
 fi
 
 # Checking and copying twrp dt
-check_tw_dt=$(basename twrp-device-tree)
-if [ $check_tw_dt -eq 0 ]; then
+basename twrp-device-tree
+exit_code=$?
+if [ $exit_code -eq 0 ]; then
     cp -r twrp-device-tree /home/Auto-Dumper
-    unset check_tw_dt
+    unset exit_code
 else
     echo "TWRP device tree not found!"
-    unset check_tw_dt
+    unset exit_code
 fi;
 
 # end of script
