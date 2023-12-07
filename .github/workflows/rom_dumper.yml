@@ -72,9 +72,9 @@ jobs:
       run: |
         sudo apt update
         sudo apt -y upgrade
-        sudo apt -y install cpio aria2 git python3 neofetch
+        sudo apt -y install cpio aria2 git python3 neofetch tar
 
-    - name: Setup GithubCLI
+    - name: Setup GithubCLI and GitLFS
       run: |
         type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
         curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
@@ -82,6 +82,11 @@ jobs:
         && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
         && sudo apt update \
         && sudo apt install gh -y
+        wget https://github.com/YZBruh/Auto-Firmware-Dumper/raw/master/lfs/git-lfs-3.4.0.tar.gz
+        tar xvzf git-lfs-3.4.0.tar.gz
+        sudo chmod 777 *.sh
+        bash install.sh
+        git lfs install
 
     - name: Clone and Setup DumprX
       run: |
@@ -143,6 +148,7 @@ jobs:
         find /home/Auto-Dumper/DumprX/out -type f -size +100M -delete -exec echo "Deleted: "{} \;
         git init
         git branch -M dump-${{ env.DC }}
+        git lfs track *.apk
         git add .
         git commit -s -m "Dump for ${{ env.DB }} ${{ env.DC }}"
         gh repo create dump_${{ env.DB }}_${{ env.DC }} --public --description="Dump for ${{ env.DB }} ${{ env.DC }}." --source=. --remote=origin --push
