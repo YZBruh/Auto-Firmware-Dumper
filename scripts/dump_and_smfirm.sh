@@ -4,7 +4,7 @@
 echo "Trying create dump..."
 cur_dir=$(pwd)
 create_dump=$(bash dumper.sh $get_link 2>&1)
-if [[ -z $create_dump]]; then
+if [[ -z $create_dump ]]; then
   echo " "
   unset create_dump
   unset cur_dir
