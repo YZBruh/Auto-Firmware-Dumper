@@ -149,6 +149,9 @@ jobs:
         git init
         git branch -M dump-${{ env.DC }}
         git lfs track *.apk
+        git lfs track *.apex
+        git lfs track *.vdex
+        git lfs track *.so
         git add .
         git commit -s -m "Dump for ${{ env.DB }} ${{ env.DC }}"
         gh repo create dump_${{ env.DB }}_${{ env.DC }} --public --description="Dump for ${{ env.DB }} ${{ env.DC }}." --source=. --remote=origin --push
