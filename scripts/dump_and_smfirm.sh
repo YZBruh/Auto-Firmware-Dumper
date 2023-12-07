@@ -3,8 +3,13 @@
 # By @YZBruh
 echo "Trying create dump..."
 cur_dir=$(pwd)
-create_dump=$(bash dumper.sh $get_link)
-if [ $create_dump -eq 0 ]; then
+create_dump=$(bash dumper.sh $get_link 2>&1)
+if [[ -z $create_dump]]; then
+  echo " "
+  unset create_dump
+  unset cur_dir
+  exit 0
+else
   echo "Dump creation failed. It is thought to be Samsung software. It's being made compatible..."
 fi;
 unset create_dump
@@ -40,8 +45,10 @@ echo "ROM was successfully extracted and made compatible with DumprX."
 
 # Try
 echo "Trying create dump (2)..."
-create_dump=$(bash dumper.sh $(pwd)/input/rom.zip)
-if [ $create_dump -eq 0 ]; then
+create_dump=$(bash dumper.sh $(pwd)/input/rom.zip 2>&1)
+if [[ -z $create_dump ]]; then
+  echo " "
+else
   echo "Dump creation failed again. We can't do anything anymore..."
   unset create_dump
   unset cur_dir
