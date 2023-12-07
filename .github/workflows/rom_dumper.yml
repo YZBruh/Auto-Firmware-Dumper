@@ -98,11 +98,7 @@ jobs:
     - name: Creating Dump
       run: |
         cd /home/Auto-Dumper/DumprX
-        get_link=$(echo "${{ env.FUR }}")
-        wget https://raw.githubusercontent.com/YZBruh/Auto-Firmware-Dumper/master/scripts/dump_and_smfirm.sh
-        chmod 777 dump_and_smfirm.sh
-        bash dump_and_smfirm.sh
-        unset get_link
+        sudo bash dumper.sh ${{ env.FUR }}
         sudo chmod -R 777 out
 
     - name: Setting up git
