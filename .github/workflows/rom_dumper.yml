@@ -158,7 +158,7 @@ jobs:
            git branch -M lineage-${{ env.DC }}
            git add .
            git commit -s -m "${{ env.DC }} : LineageOS compatible device tree"
-           gh repo create lineage_device_${{ env.DB }}_${{ env.DC }} --public --description="LineageOS compatible tree for ${{ env.DC }}." --source=. --remote=origin --push)
+           gh repo create lineage_device_${{ env.DB }}_${{ env.DC }} --public --description="LineageOS compatible tree for ${{ env.DC }}." --source=. --remote=origin --push
         else
            echo "The LineageOS compatible device tree has not been created.";
            echo "Pushing Canceled."
@@ -178,7 +178,7 @@ jobs:
            git branch -M twrp-${{ env.DC }}
            git add .
            git commit -s -m "${{ env.DC }} : TWRP compatible device tree"
-           gh repo create twrp_device_${{ env.DB }}_${{ env.DC }} --public --description="TWRP compatible tree for ${{ env.DC }}." --source=. --remote=origin --push)
+           gh repo create twrp_device_${{ env.DB }}_${{ env.DC }} --public --description="TWRP compatible tree for ${{ env.DC }}." --source=. --remote=origin --push
         else
            echo "The TWRP compatible device tree has not been created.";
            echo "Pushing Canceled."
