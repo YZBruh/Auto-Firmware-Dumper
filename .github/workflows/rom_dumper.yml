@@ -162,7 +162,7 @@ jobs:
       if: |
         env.LOT == 'Okay'
       run: |
-        cd /home/Auto-Dumper/twrp-device-tree
+        cd /home/Auto-Dumper/twrp-device-tree/*/*
         git init
         git branch -M twrp-${{ env.DC }}
         git add .
