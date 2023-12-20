@@ -151,9 +151,6 @@ jobs:
            fingerprint=$(grep "ro.system.build.fingerprint=" build.prop | cut -d'=' -f2)
            cd /home/Auto-Dumper
            echo "$version" >> version.txt
-           cd /home/Auto-Dumper/DumprX/out/system
-           fingerprint=$(grep "ro.system.build.fingerprint=" build.prop | cut -d'=' -f2)
-           cd /home/Auto-Dumper
            echo "$fingerprint" >> fingerprint.txt
            cd /home/Auto-Dumper/DumprX/out
         fi
