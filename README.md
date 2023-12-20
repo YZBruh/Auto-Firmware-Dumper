@@ -1,7 +1,6 @@
 # Auto Firmware Dumper
 It allows you to create ROM dumps using GitHub actions. It uses DumprX when creating dumps.
 DumprX: https://github.com/DumprX/DumprX
-This project is licensed under the `Eclipse Public License 2.0`
 
 ## Requirements
 - ROM Link [mediafire | mega.nz | gdrive | AndroidFileHost OR Directly download link]
@@ -23,6 +22,7 @@ Add this:
 - When the process is completed, you will have the following among your repositories: dump_`<brand>`_`<device>`. And if you've approved it, the repository of device trees you've approved. You will understand when you look.
 
 ## Small explanations and notes
+- This project is licensed under the `Eclipse Public License 2.0`
 - Any deficiencies or problems on the dump are caused by Stock ROM.
 - I'm still developing it. But still good.
 - If there is a capital letter in the device code name, do not write it that way. Make all letters lowercase.
