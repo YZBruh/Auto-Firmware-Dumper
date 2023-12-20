@@ -144,7 +144,7 @@ jobs:
         sudo rm -rf .git
         find /home/Auto-Dumper/DumprX/out -type f -size +50M -delete -exec echo "Deleted: "{} \;
         git init
-        git branch -M dump-"$fingerprint"
+        git branch -M dump-"$codename"
         git add .
         git commit -s -m "Dump for $brand $codename"
         gh repo create dump_"$brand"_"$codename" --public --description="Dump for $brand $codename " --source=. --remote=origin --push
