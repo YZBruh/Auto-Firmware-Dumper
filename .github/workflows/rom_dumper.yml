@@ -128,17 +128,33 @@ jobs:
         fi;
         cd /home/Auto-Dumper/DumprX/out/vendor
         codename=$(grep "ro.product.vendor.device=" build.prop | cut -d'=' -f2)
+        cd /home/Auto-Dumper
+        echo "$codename" >> codename.txt
+        cd /home/Auto-Dumper/DumprX/out/vendor
         brand=$(grep "ro.product.vendor.brand=" build.prop | cut -d'=' -f2)
+        cd /home/Auto-Dumper
+        echo "$brand" >> brand.txt
         cd /home/Auto-Dumper/DumprX/out
         cd system
         if [ -d system ]; then
            cd system
            version=$(grep "ro.build.version.release_or_codename=" build.prop | cut -d'=' -f2)
+           cd /home/Auto-Dumper
+           echo "$version" >> version.txt
+           cd /home/Auto-Dumper/DumprX/out/system/system
            fingerprint=$(grep "ro.system.build.fingerprint=" build.prop | cut -d'=' -f2)
+           cd /home/Auto-Dumper
+           echo "$fingerprint" >> fingerprint.txt
            cd /home/Auto-Dumper/DumprX/out
         else
            version=$(grep "ro.build.version.release_or_codename=" build.prop | cut -d'=' -f2)
            fingerprint=$(grep "ro.system.build.fingerprint=" build.prop | cut -d'=' -f2)
+           cd /home/Auto-Dumper
+           echo "$version" >> version.txt
+           cd /home/Auto-Dumper/DumprX/out/system
+           fingerprint=$(grep "ro.system.build.fingerprint=" build.prop | cut -d'=' -f2)
+           cd /home/Auto-Dumper
+           echo "$fingerprint" >> fingerprint.txt
            cd /home/Auto-Dumper/DumprX/out
         fi
         sudo rm -rf .git
@@ -155,7 +171,10 @@ jobs:
       if: |
         env.TWT == 'Okay'
       run: |
-        cd /home/Auto-Dumper/lineage-device-tree
+        cd /home/Auto-Dumper
+        codename=$(cat codename.txt)
+        brand=$(cat brand.txt)
+        cd lineage-device-tree
         git init
         git branch -M lineage-"$codename"
         git add .
@@ -166,7 +185,11 @@ jobs:
       if: |
         env.LOT == 'Okay'
       run: |
-        cd /home/Auto-Dumper/twrp-device-tree
+        cd /home/Auto-Dumper
+        codename=$(cat codename.txt)
+        brand=$(cat brand.txt)
+        version=$(cat version.txt)
+        cd twrp-device-tree
         if [ -f BoardConfig.mk ]; then
            git init
            git branch -M twrp-$version
