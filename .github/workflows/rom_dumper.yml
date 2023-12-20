@@ -94,6 +94,8 @@ jobs:
         sudo chmod 777 setup.sh
         sudo chmod 777 dumper.sh
         bash setup.sh
+        pip3 install aospdtgen
+        pip3 install twrpdtgen
 
     - name: Creating Dump
       run: |
@@ -168,7 +170,6 @@ jobs:
       if: |
         env.LOT == 'Okay'
       run: |
-        cd /home/Auto-Dumper
         cd /home/Auto-Dumper/twrp-device-tree
         if [[ $(readlink BoardConfig.mk) ]]; then
            if [[ $(readlink .git) ]]; then
