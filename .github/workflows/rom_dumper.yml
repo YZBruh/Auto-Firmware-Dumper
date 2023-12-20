@@ -128,22 +128,18 @@ jobs:
         fi;
         cd /home/Auto-Dumper/DumprX/out/vendor
         codename=$(grep "ro.product.vendor.device=" build.prop | cut -d'=' -f2)
-        cd /home/Auto-Dumper
-        echo "$codename" >> codename.txt
-        cd /home/Auto-Dumper/DumprX/out/vendor
         brand=$(grep "ro.product.vendor.brand=" build.prop | cut -d'=' -f2)
         cd /home/Auto-Dumper
+        echo "$codename" >> codename.txt
         echo "$brand" >> brand.txt
         cd /home/Auto-Dumper/DumprX/out
         cd system
         if [ -d system ]; then
            cd system
            version=$(grep "ro.build.version.release_or_codename=" build.prop | cut -d'=' -f2)
-           cd /home/Auto-Dumper
-           echo "$version" >> version.txt
-           cd /home/Auto-Dumper/DumprX/out/system/system
            fingerprint=$(grep "ro.system.build.fingerprint=" build.prop | cut -d'=' -f2)
            cd /home/Auto-Dumper
+           echo "$version" >> version.txt
            echo "$fingerprint" >> fingerprint.txt
            cd /home/Auto-Dumper/DumprX/out
         else
