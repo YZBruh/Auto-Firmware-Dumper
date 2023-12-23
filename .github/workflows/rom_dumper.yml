@@ -129,7 +129,7 @@ jobs:
         brand=$(grep "ro.product.vendor.brand=" build.prop | cut -d'=' -f2)
         new_brand=$(echo "$brand" | tr 'A-Z' 'a-z')
         unset brand
-        brand=$new_bran
+        brand=$new_brand
         cd /home/Auto-Dumper
         echo "$codename" >> codename.txt
         echo "$brand" >> brand.txt
