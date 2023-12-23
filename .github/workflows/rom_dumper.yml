@@ -95,33 +95,31 @@ jobs:
 
     - name: Setting up git
       run: |
-        git config --global user.name "${{ env.UN }}" && git config --global user.email "${{ env.UEM }}"
+        git config --global user.name "${{ env.UN }}"
+        git config --global user.email "${{ env.UEM }}"
 
     - name: Uploading ROM Dump for GitHub Repository
       run: |
         cd /home/Auto-Dumper/DumprX/out
         sudo chmod -R 777 *
-        dump_con="system"
-        if [ -d "$dump_con" ]; then
+        if [ -d system ]; then
            echo " "
         else
            echo "Failed!";
            cd /home/Auto-Dumper
            sudo rm -rf DumprX
-           unset dump_con
            exit 1;
         fi;
-        unset dump_cont
         los_dir="lineage-device-tree"
         if [ -d "$los_dir" ]; then
-           cp -r lineage-device-tree /home/Auto-Dumper
+           cp -r $los_dir /home/Auto-Dumper
         else
            echo "Lineage device tree not found!";
            unset los_dir
         fi;
         tw_dir="twrp-device-tree"
         if [ -d "$tw_dir" ]; then
-           cp -r twrp-device-tree /home/Auto-Dumper
+           cp -r $tw_dir /home/Auto-Dumper
         else
            echo "TWRP device tree not found!";
            unset tw_dir
@@ -185,7 +183,7 @@ jobs:
         cd twrp-device-tree
         if [ -f BoardConfig.mk ]; then
            git init
-           git branch -M twrp-$version
+           git branch -M twrp-"$version"
            git add .
            git commit -s -m "$codename : TWRP compatible device tree"
            gh repo create twrp_device_"$brand"_"$codename" --public --description="TWRP compatible tree for $codename " --source=. --remote=origin --push
@@ -193,7 +191,7 @@ jobs:
            cd $brand
            cd $codename
            git init
-           git branch -M twrp-$version
+           git branch -M twrp-"$version"
            git add .
            git commit -s -m "$codename : TWRP compatible device tree"
            gh repo create twrp_device_"$brand"_"$codename" --public --description="TWRP compatible tree for $codename " --source=. --remote=origin --push
