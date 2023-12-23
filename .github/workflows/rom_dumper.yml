@@ -171,6 +171,7 @@ jobs:
         git add .
         git commit -s -m "$codename : LineageOS compatible device tree"
         gh repo create lineage_device_"$brand"_"$codename" --public --description="LineageOS compatible tree for $codename " --source=. --remote=origin --push
+      continue-on-error: true
 
     - name: Uploading TWRP Device Tree
       if: |
@@ -196,3 +197,4 @@ jobs:
            git commit -s -m "$codename : TWRP compatible device tree"
            gh repo create twrp_device_"$brand"_"$codename" --public --description="TWRP compatible tree for $codename " --source=. --remote=origin --push
         fi
+      continue-on-error: true
