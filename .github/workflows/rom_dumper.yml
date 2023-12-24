@@ -131,6 +131,14 @@ jobs:
         fi
         codename=$(grep "ro.product.vendor.device=" build.prop | cut -d'=' -f2)
         brand=$(grep "ro.product.vendor.brand=" build.prop | cut -d'=' -f2)
+        if [ "$codename" == "" ]; then
+           unset codename
+           codename=$(grep "ro.vendor.product.device=" build.prop | cut -d'=' -f2)
+        fi
+        if [ "$brand" == "" ]; then
+           unset brand
+           brand=$(grep "ro.vendor.product.brand=" build.prop | cut -d'=' -f2)
+        fi
         new_brand=$(echo "$brand" | tr 'A-Z' 'a-z')
         unset brand
         brand=$new_brand
