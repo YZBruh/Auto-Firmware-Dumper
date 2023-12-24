@@ -124,7 +124,11 @@ jobs:
            echo "TWRP device tree not found!";
            unset tw_dir
         fi;
-        cd /home/Auto-Dumper/DumprX/out/vendor
+        if [ -d vendor ]; then
+           cd vendor
+        else
+           cd system/vendor
+        fi
         codename=$(grep "ro.product.vendor.device=" build.prop | cut -d'=' -f2)
         brand=$(grep "ro.product.vendor.brand=" build.prop | cut -d'=' -f2)
         new_brand=$(echo "$brand" | tr 'A-Z' 'a-z')
