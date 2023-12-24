@@ -134,6 +134,8 @@ jobs:
         new_brand=$(echo "$brand" | tr 'A-Z' 'a-z')
         unset brand
         brand=$new_brand
+        new_codename=$(echo "$codename")
+        codename=$(echo "$new_codename" | tr -d '[:space:]')
         cd /home/Auto-Dumper
         echo "$codename" >> codename.txt
         echo "$brand" >> brand.txt
