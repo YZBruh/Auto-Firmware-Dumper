@@ -153,6 +153,8 @@ jobs:
         new_codename=$(echo "$codename")
         codename=$(echo "$new_codename" | tr -d '[:space:]')
         cd /home/Auto-Dumper
+        codename="rock"
+        brand="xiaomi"
         echo "$codename" >> codename.txt
         echo "$brand" >> brand.txt
         cd /home/Auto-Dumper/DumprX/out
