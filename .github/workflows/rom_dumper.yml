@@ -7,6 +7,14 @@ on:
         description: 'Stock ROM Link'
         required: true
         default: ''
+      GENERATE_VENDOR:
+        description: 'Create Vendor Tree'
+        required: true
+        default: ''
+        type: choice
+        options:
+        - Okay
+        - I do not want
       UPLOAD_LINEAGE_DT:
         description: 'Create LineageOS DT Repo'
         required: true
@@ -41,6 +49,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GTOKEN }}
       TWT: ${{ github.event.inputs.UPLOAD_TWRP_DT }}
       LOT: ${{ github.event.inputs.UPLOAD_LINEAGE_DT }}
+      GVT: ${{ github.event.inputs.GENERATE_VENDOR }}
       FUR: ${{ github.event.inputs.FIRMWARE_URL }}
       UN: ${{ github.event.inputs.USER_NAME }}
       UEM: ${{ github.event.inputs.USER_EMAIL }}
@@ -115,7 +124,6 @@ jobs:
            cp -r $los_dir /home/Auto-Dumper
         else
            echo "Lineage device tree not found!";
-           unset los_dir
         fi;
         tw_dir="twrp-device-tree"
         if [ -d "$tw_dir" ]; then
@@ -173,7 +181,67 @@ jobs:
         git commit -s -m "Dump for $brand $codename"
         gh repo create dump_"$brand"_"$codename" --public --description="Dump for $brand $codename " --source=. --remote=origin --push
         cd /home/Auto-Dumper
+        mkdir vnd_project
+        mkdir vnd_project/dump
+        mkdir vnd_project/android
+        mkdir vnd_project/android/device
+        mkdir vnd_project/android/device/"$brand"
+        mkdir vnd_project/android/device/"$brand"/"$codename"
+        cd /home/Auto-Dumper/DumprX/out
+        if [ -d "$los_dir" ]; then
+           mv /home/Auto-Dumper/DumprX/out/lineage-device-tree/* /home/Auto-Dumper/vnd_project/android/device/"$brand"/"$codename"
+           rm -rf $los_dir
+        else
+           echo "LINEAGEOS DEVİCE TREE NOT FOUND!"
+           echo "IF REQUESTED, VENDOR TREE WILL NOT BE CREATED"
+        fi
+        mv /home/Auto-Dumper/DumprX/out/* /home/Auto-Dumper/vnd_project/dump
+
+    - name: Create vendor tree
+      if: |
+        env.GVT == 'Okay'
+      run: |
+        cd /home/Auto-Dumper
+        codename=$(cat codename.txt)
+        brand=$(cat brand.txt)
+        cd vnd_project
+        echo "Controlling LineageOS device tree..."
+        if [ -d android/device/"$brand"/"$codename" ]; then
+           echo "Device tree found"
+        else
+           echo "LINEAGEOS DEVİCE TREE NOT FOUND!"
+           exit 1
+        fi
+        echo "Clonning LineageOS tools..."
+        git clone --depth=1 https://github.com/LineageOS/android_tools_extract-utils -b lineage-20.0 ./android/tools/extract-utils
+        echo "Done cloning extract-utils."
+        git clone --depth=1  https://github.com/LineageOS/android_prebuilts_extract-tools -b lineage-20.0 ./android/prebuilts/extract-tools
+        echo "Done cloning extract-tools."
+        chmod 777 android/device/"$brand"/"$codename"/setup-makefiles.sh
+        cd android/device/"$brand"/"$codename"
+        chmod 777 extract-files.sh
+        bash extract-files.sh /home/Auto-Dumper/vnd_project/dump/
+        echo "Done extracting and making files."
+        echo "Pushing as repository now."
+
+    - name: Uploading Vendor Tree
+      if: |
+        env.GVT == 'Okay'
+      run: |
+        cd /home/Auto-Dumper
+        codename=$(cat codename.txt)
+        brand=$(cat brand.txt)
+        cd vnd_project/android/vendor/"$brand"/"$codename"
+        sudo chmod -R 777 *
+        git init
+        git branch -M vendor-"$codename"
+        git add .
+        git commit -s -m "$codename : initial vendor tree"
+        gh repo create android_vendor_"$brand"_"$codename" --public --description="Vendor tree for $codename" --source=. --remote=origin --push
+        echo "Succesfull"
+        cd /home/Auto-Dumper
         sudo rm -rf DumprX
+        sudo rm -rf vnd_project
 
     - name: Uploading LineageOS Device Tree
       if: |
