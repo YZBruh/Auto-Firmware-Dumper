@@ -217,9 +217,9 @@ jobs:
         echo "Done cloning extract-utils."
         git clone --depth=1  https://github.com/LineageOS/android_prebuilts_extract-tools -b lineage-20.0 ./android/prebuilts/extract-tools
         echo "Done cloning extract-tools."
-        chmod 777 android/device/"$brand"/"$codename"/setup-makefiles.sh
+        sudo chmod 777 android/device/"$brand"/"$codename"/setup-makefiles.sh
         cd android/device/"$brand"/"$codename"
-        chmod 777 extract-files.sh
+        sudo chmod 777 extract-files.sh
         bash extract-files.sh /home/Auto-Dumper/vnd_project/dump/
         echo "Done extracting and making files."
         echo "Pushing as repository now."
