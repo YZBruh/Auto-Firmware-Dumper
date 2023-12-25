@@ -102,7 +102,7 @@ jobs:
         sudo bash dumper.sh ${{ env.FUR }}
         sudo chmod -R 777 out
 
-    - name: Setting up Git and GitLFS
+    - name: Setting up Git
       run: |
         git config --global user.name "${{ env.UN }}"
         git config --global user.email "${{ env.UEM }}"
@@ -195,6 +195,7 @@ jobs:
            fi
         fi
         find /home/Auto-Dumper/DumprX/out -type f -size +50M -delete -exec echo "Deleted: "{} \;
+        git config --global http.postBuffer 524288000
         git init
         git branch -M dump-"$codename"
         git add .
