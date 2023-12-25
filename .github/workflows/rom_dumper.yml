@@ -175,14 +175,24 @@ jobs:
         fi
         sudo rm -rf .git
         echo "Compressing images..."
+        max_size="48000000"
         if [ -f recovery.img ]; then
-           gzip -f recovery.img
+           recovery_size=$(stat -c %s recovery.img)
+           if [[ $recovery_size -gt $max_size ]]; then
+              gzip -f recovery.img
+           fi
         fi
         if [ -f boot.img ]; then
-           gzip -f boot.img
+           boot_size=$(stat -c %s boot.img)
+           if [[ $boot_size -gt $max_size ]]; then
+              gzip -f boot.img
+           fi
         fi
         if [ -f vendor_boot.img ]; then
-           gzip -f vendor_boot.img
+           vboot_size=$(stat -c %s vendor_boot.img)
+           if [[ $vboot_size -gt $max_size ]]; then
+              gzip -f vendor_boot.img
+           fi
         fi
         find /home/Auto-Dumper/DumprX/out -type f -size +50M -delete -exec echo "Deleted: "{} \;
         git init
