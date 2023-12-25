@@ -104,18 +104,8 @@ jobs:
 
     - name: Setting up Git and GitLFS
       run: |
-        cd /home/Auto-Dumper
-        wget https://github.com/YZBruh/Auto-Firmware-Dumper/raw/master/LFS/git-lfs-linux-amd64-v3.4.0.tar.gz
-        tar xvzf git*.tar.gz
-        rm -rf *.tar.gz
-        cd git-lfs*
-        sudo chmod 777 install.sh
-        bash install.sh
-        git lfs install
         git config --global user.name "${{ env.UN }}"
         git config --global user.email "${{ env.UEM }}"
-        cd /home/Auto-Dumper/DumprX/out
-        git lfs track "*.img"
 
     - name: Uploading ROM Dump for GitHub Repository
       run: |
@@ -184,6 +174,16 @@ jobs:
            cd /home/Auto-Dumper/DumprX/out
         fi
         sudo rm -rf .git
+        echo "Compressing images..."
+        if [ -f recovery.img ]; then
+           gzip -f recovery.img
+        fi
+        if [ -f boot.img ]; then
+           gzip -f boot.img
+        fi
+        if [ -f vendor_boot.img ]; then
+           gzip -f vendor_boot.img
+        fi
         find /home/Auto-Dumper/DumprX/out -type f -size +50M -delete -exec echo "Deleted: "{} \;
         git init
         git branch -M dump-"$codename"
