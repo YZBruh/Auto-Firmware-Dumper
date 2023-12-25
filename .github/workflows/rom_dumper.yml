@@ -71,7 +71,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt -y upgrade
-        sudo apt -y install cpio aria2 git python3 neofetch tar
+        sudo apt -y install cpio aria2 git python3 neofetch tar gzip
 
     - name: Setup GithubCLI
       run: |
@@ -102,10 +102,20 @@ jobs:
         sudo bash dumper.sh ${{ env.FUR }}
         sudo chmod -R 777 out
 
-    - name: Setting up git
+    - name: Setting up Git and GitLFS
       run: |
+        cd /home/Auto-Dumper
+        wget https://github.com/YZBruh/Auto-Firmware-Dumper/raw/master/LFS/git-lfs-linux-amd64-v3.4.0.tar.gz
+        tar xvzf git*.tar.gz
+        rm -rf *.tar.gz
+        cd git-lfs*
+        sudo chmod 777 install.sh
+        bash install.sh
+        git lfs install
         git config --global user.name "${{ env.UN }}"
         git config --global user.email "${{ env.UEM }}"
+        cd /home/Auto-Dumper/DumprX/out
+        git lfs track "*.img"
 
     - name: Uploading ROM Dump for GitHub Repository
       run: |
