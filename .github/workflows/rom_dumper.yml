@@ -195,7 +195,6 @@ jobs:
            fi
         fi
         find /home/Auto-Dumper/DumprX/out -type f -size +50M -delete -exec echo "Deleted: "{} \;
-        git config --global http.postBuffer 524288000
         git init
         git branch -M dump-"$codename"
         git add .
