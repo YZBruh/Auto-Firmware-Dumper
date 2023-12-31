@@ -301,7 +301,7 @@ jobs:
            cd $brand
            cd $codename
            git init
-           git branch -M twrp-"$version"-"$dat
+           git branch -M twrp-"$version"-"$dat"
            git add .
            git commit -s -m "$codename : TWRP compatible device tree"
            gh repo create twrp_device_"$brand"_"$codename" --public --description="TWRP compatible tree for $codename " --source=. --remote=origin --push
