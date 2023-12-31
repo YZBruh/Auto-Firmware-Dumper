@@ -195,8 +195,9 @@ jobs:
            fi
         fi
         find /home/Auto-Dumper/DumprX/out -type f -size +50M -delete -exec echo "Deleted: "{} \;
+        dat=$(date +%Y%m%d)
         git init
-        git branch -M dump-"$codename"
+        git branch -M dump-"$codename"-"$dat"
         git add .
         git commit -s -m "Dump for $brand $codename"
         gh repo create dump_"$brand"_"$codename" --public --description="Dump for $brand $codename " --source=. --remote=origin --push
@@ -253,8 +254,9 @@ jobs:
         brand=$(cat brand.txt)
         cd vnd_project/android/vendor/"$brand"/"$codename"
         sudo chmod -R 777 *
+        dat=$(date +%Y%m%d)
         git init
-        git branch -M vendor-"$codename"
+        git branch -M vendor-"$codename"-"$dat"
         git add .
         git commit -s -m "$codename : initial vendor tree"
         gh repo create android_vendor_"$brand"_"$codename" --public --description="Vendor tree for $codename" --source=. --remote=origin --push
@@ -271,8 +273,9 @@ jobs:
         codename=$(cat codename.txt)
         brand=$(cat brand.txt)
         cd lineage-device-tree
+        dat=$(date +%Y%m%d)
         git init
-        git branch -M lineage-"$codename"
+        git branch -M lineage-"$codename"-"$dat"
         git add .
         git commit -s -m "$codename : LineageOS compatible device tree"
         gh repo create lineage_device_"$brand"_"$codename" --public --description="LineageOS compatible tree for $codename " --source=. --remote=origin --push
@@ -287,9 +290,10 @@ jobs:
         brand=$(cat brand.txt)
         version=$(cat version.txt)
         cd twrp-device-tree
+        dat=$(date +%Y%m%d)
         if [ -f BoardConfig.mk ]; then
            git init
-           git branch -M twrp-"$version"
+           git branch -M twrp-"$version"-"$dat"
            git add .
            git commit -s -m "$codename : TWRP compatible device tree"
            gh repo create twrp_device_"$brand"_"$codename" --public --description="TWRP compatible tree for $codename " --source=. --remote=origin --push
@@ -297,7 +301,7 @@ jobs:
            cd $brand
            cd $codename
            git init
-           git branch -M twrp-"$version"
+           git branch -M twrp-"$version"-"$dat
            git add .
            git commit -s -m "$codename : TWRP compatible device tree"
            gh repo create twrp_device_"$brand"_"$codename" --public --description="TWRP compatible tree for $codename " --source=. --remote=origin --push
