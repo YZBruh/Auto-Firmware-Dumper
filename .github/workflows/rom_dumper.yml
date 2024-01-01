@@ -200,6 +200,12 @@ jobs:
               gzip -f init_boot.img
            fi
         fi
+        if [ -f dtbo.img ]; then
+           cp dtbo.img /home/Auto-Dumper
+        fi
+        if [ -f dtb.img ]; then
+           cp dtb.img /home/Auto-Dumper
+        fi
         find /home/Auto-Dumper/DumprX/out -type f -size +50M -delete -exec echo "Deleted: "{} \;
         dat=$(date +%Y%m%d)
         git init
@@ -323,5 +329,7 @@ jobs:
           /home/Auto-Dumper/recovery.img
           /home/Auto-Dumper/vendor_boot.img
           /home/Auto-Dumper/init_boot.img
+          /home/Auto-Dumper/dtbo.img
+          /home/Auto-Dumper/dtb.img
         if-no-files-found: ignore
       continue-on-error: true
