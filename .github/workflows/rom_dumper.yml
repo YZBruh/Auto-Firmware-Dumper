@@ -177,21 +177,27 @@ jobs:
         echo "Compressing images..."
         max_size="48000000"
         if [ -f recovery.img ]; then
-           recovery_size=$(stat -c %s recovery.img)
-           if [[ $recovery_size -gt $max_size ]]; then
+           if [[ $(stat -c %s recovery.img) -gt $max_size ]]; then
+              cp recovery.img /home/Auto-Dumper
               gzip -f recovery.img
            fi
         fi
         if [ -f boot.img ]; then
-           boot_size=$(stat -c %s boot.img)
-           if [[ $boot_size -gt $max_size ]]; then
+           if [[ $(stat -c %s boot.img) -gt $max_size ]]; then
+              cp boot.img /home/Auto-Dumper
               gzip -f boot.img
            fi
         fi
         if [ -f vendor_boot.img ]; then
-           vboot_size=$(stat -c %s vendor_boot.img)
-           if [[ $vboot_size -gt $max_size ]]; then
+           if [[ $(stat -c %s vendor_boot.img) -gt $max_size ]]; then
+              cp vendor_boot.img /home/Auto-Dumper
               gzip -f vendor_boot.img
+           fi
+        fi
+        if [ -f init_boot.img ]; then
+           if [[ $(stat -c %s init_boot.img) -gt $max_size ]]; then
+              cp init_boot.img /home/Auto-Dumper
+              gzip -f init_boot.img
            fi
         fi
         find /home/Auto-Dumper/DumprX/out -type f -size +50M -delete -exec echo "Deleted: "{} \;
@@ -306,4 +312,16 @@ jobs:
            git commit -s -m "$codename : TWRP compatible device tree"
            gh repo create twrp_device_"$brand"_"$codename" --public --description="TWRP compatible tree for $codename " --source=. --remote=origin --push
         fi
+      continue-on-error: true
+
+    - name: Uploading preview of images
+      uses: actions/upload-artifact@v4
+      with: 
+        name: Prewiew images
+        path: |
+          /home/Auto-Dumper/boot.img
+          /home/Auto-Dumper/recovery.img
+          /home/Auto-Dumper/vendor_boot.img
+          /home/Auto-Dumper/init_boot.img
+        if-no-files-found: ignore
       continue-on-error: true
