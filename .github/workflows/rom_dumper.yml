@@ -16,7 +16,7 @@ on:
         - Okay
         - I do not want
       UPLOAD_LINEAGE_DT:
-        description: 'Create LineageOS DT Repo'
+        description: 'Upload LineageOS tree'
         required: true
         default: ''
         type: choice
@@ -24,7 +24,7 @@ on:
         - Okay
         - I do not want
       UPLOAD_TWRP_DT:
-        description: 'Create TWRP DT Repo'
+        description: 'Upload TWRP tree'
         required: true
         default: ''
         type: choice
@@ -85,13 +85,11 @@ jobs:
     - name: Clone and Setup DumprX
       run: |
         cd /home
-        sudo mkdir Auto-Dumper
-        sudo chmod 777 Auto-Dumper
+        sudo mkdir mode=777 Auto-Dumper
         cd Auto-Dumper
         git clone https://github.com/DumprX/DumprX
         cd DumprX
-        sudo chmod 777 setup.sh
-        sudo chmod 777 dumper.sh
+        sudo chmod 777 *.sh
         bash setup.sh
         pip3 install aospdtgen
         pip3 install twrpdtgen
@@ -107,7 +105,7 @@ jobs:
         git config --global user.name "${{ env.UN }}"
         git config --global user.email "${{ env.UEM }}"
 
-    - name: Uploading ROM Dump for GitHub Repository
+    - name: Uploading ROM Dump
       run: |
         cd /home/Auto-Dumper/DumprX/out
         sudo chmod -R 777 *
