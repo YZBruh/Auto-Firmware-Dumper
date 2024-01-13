@@ -132,12 +132,11 @@ jobs:
         fi;
         if [ -d vendor ]; then
            cd vendor
-        elif [ -f system/vendor/build.prop ]; then
-           cd system/vendor
-        elif [ -f system/system/build.prop ]; then
-           cd system/system
         else
            cd system
+           if [ -d system ]; then
+              cd system
+           fi
         fi
         codename=$(grep "ro.product.vendor.device=" build.prop | cut -d'=' -f2)
         brand=$(grep "ro.product.vendor.brand=" build.prop | cut -d'=' -f2)
