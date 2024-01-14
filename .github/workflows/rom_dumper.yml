@@ -288,7 +288,7 @@ jobs:
 
     - name: Uploading LineageOS Device Tree
       if: |
-        env.TWT == 'Okay'
+        env.LOT == 'Okay'
       run: |
         cd /home/Auto-Dumper
         codename=$(cat codename.txt)
@@ -304,7 +304,7 @@ jobs:
 
     - name: Uploading TWRP Device Tree
       if: |
-        env.LOT == 'Okay'
+        env.TWT == 'Okay'
       run: |
         cd /home/Auto-Dumper
         codename=$(cat codename.txt)
