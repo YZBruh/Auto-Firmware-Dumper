@@ -30,4 +30,3 @@ Add this:
 - It is imperative to enter all the desired information.
 - Set the action entries to `Okay` for the trees you want to be loaded separately. If you don't want `I do not want`.
 - 50MB and over files will be deleted. Reason: go maximum file head installation size 50MB. If that happens more, it will fail.
-- Telegram: @YZBruh
