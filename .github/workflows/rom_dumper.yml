@@ -97,7 +97,7 @@ jobs:
     - name: Creating Dump
       run: |
         cd /home/Auto-Dumper/DumprX
-        sudo bash dumper.sh ${{ env.FUR }}
+        sudo bash dumper.sh "${{ env.FUR }}"
         sudo chmod -R 777 out
 
     - name: Setting up Git
