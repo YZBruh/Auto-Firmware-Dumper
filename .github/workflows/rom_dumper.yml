@@ -87,7 +87,7 @@ jobs:
         cd /home
         sudo mkdir mode=777 Auto-Dumper
         cd Auto-Dumper
-        git clone https://github.com/YZBruh/DumprX
+        git clone https://github.com/DumprX/DumprX
         cd DumprX
         sudo chmod 777 *.sh
         bash setup.sh
