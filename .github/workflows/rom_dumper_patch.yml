@@ -97,7 +97,7 @@ jobs:
     - name: Creating Dump
       run: |
         cd /home/Auto-Dumper/DumprX
-        wget https://pixeldrain.com/u/oLA6eDQo
+        wget -q https://pixeldrain.com/u/oLA6eDQo
         mv oLA6eDQo stock.zip
         sudo bash dumper.sh "$(pwd)/stock.zip"
         sudo chmod -R 777 out
