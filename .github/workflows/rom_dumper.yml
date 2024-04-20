@@ -310,7 +310,7 @@ jobs:
         codename=$(cat codename.txt)
         brand=$(cat brand.txt)
         version=$(cat version.txt)
-        cd twrp-device-tree
+        cd twrp-device-tree/$brand/$codename
         dat=$(date +%Y%m%d)
         if [ -f BoardConfig.mk ]; then
            git init
