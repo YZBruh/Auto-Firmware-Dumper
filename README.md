@@ -28,5 +28,5 @@ Add this:
 - Report problems.
 - Make sure you fill in the information correctly.
 - It is imperative to enter all the desired information.
-- Set the action entries to `Okay` for the trees you want to be loaded separately. If you don't want `I do not want`.
+- If you want some trees/resources to be loaded separately, you must check the relevant box.
 - 50MB and over files will be deleted. Reason: go maximum file head installation size 50MB. If that happens more, it will fail.
