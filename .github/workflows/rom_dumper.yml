@@ -10,27 +10,18 @@ on:
       GENERATE_VENDOR:
         description: 'Create Vendor Tree'
         required: true
-        default: ''
-        type: choice
-        options:
-        - Okay
-        - I do not want
+        default: 'false'
+        type: boolean
       UPLOAD_LINEAGE_DT:
         description: 'Upload LineageOS tree'
         required: true
-        default: ''
-        type: choice
-        options:
-        - Okay
-        - I do not want
+        default: 'false'
+        type: boolean
       UPLOAD_TWRP_DT:
         description: 'Upload TWRP tree'
         required: true
-        default: ''
-        type: choice
-        options:
-        - Okay
-        - I do not want
+        default: 'false'
+        type: boolean
       USER_NAME:
         description: 'Name in GitHub Account'
         required: true
@@ -241,7 +232,7 @@ jobs:
 
     - name: Create vendor tree
       if: |
-        env.GVT == 'Okay'
+        env.GVT == 'true'
       run: |
         cd /home/Auto-Dumper
         codename=$(cat codename.txt)
@@ -268,7 +259,7 @@ jobs:
 
     - name: Uploading Vendor Tree
       if: |
-        env.GVT == 'Okay'
+        env.GVT == 'true'
       run: |
         cd /home/Auto-Dumper
         codename=$(cat codename.txt)
@@ -288,7 +279,7 @@ jobs:
 
     - name: Uploading LineageOS Device Tree
       if: |
-        env.LOT == 'Okay'
+        env.LOT == 'true'
       run: |
         cd /home/Auto-Dumper
         codename=$(cat codename.txt)
@@ -304,7 +295,7 @@ jobs:
 
     - name: Uploading TWRP Device Tree
       if: |
-        env.TWT == 'Okay'
+        env.TWT == 'true'
       run: |
         cd /home/Auto-Dumper
         codename=$(cat codename.txt)
