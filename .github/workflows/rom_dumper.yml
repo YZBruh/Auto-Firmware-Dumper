@@ -3,6 +3,14 @@ name: Auto Firmware Dumper
 on:
   workflow_dispatch:
     inputs:
+      USER_NAME:
+        description: 'Name in GitHub Account'
+        required: true
+        default: ''
+      USER_EMAIL:
+        description: 'E-mail in GitHub Account'
+        required: true
+        default: ''
       FIRMWARE_URL:
         description: 'Stock ROM Link'
         required: true
@@ -22,14 +30,6 @@ on:
         required: true
         default: 'false'
         type: boolean
-      USER_NAME:
-        description: 'Name in GitHub Account'
-        required: true
-        default: ''
-      USER_EMAIL:
-        description: 'E-mail in GitHub Account'
-        required: true
-        default: ''
 
 jobs:
   build:
