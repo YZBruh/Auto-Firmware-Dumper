@@ -1,32 +1,32 @@
-# Auto Firmware Dumper
-It allows you to create ROM dumps using GitHub actions. It uses [DumprX](https://github.com/DumprX/DumprX) when creating dumps.
+# 自动固件转储器
+它允许您使用 GitHub Actions 创建 ROM 转储。在创建转储时，它使用 [DumprX](https://github.com/DumprX/DumprX)。
 
-## Requirements
-- ROM Link [mediafire | mega.nz | gdrive | AndroidFileHost OR Directly download link]
-- GitHub token (I will explain)
-- Patience
+## 要求
+- ROM 链接 [mediafire | mega.nz | gdrive | AndroidFileHost 或直接下载链接]
+- GitHub 令牌（我会解释）
+- 耐心
 
-## Instruction for use
-- Go to the GitHub account settings. Create an access bucket there. Token type should be classic. Mark all the boxes. And copy the token immediately. Because you won't see again
-- Fork this repository.
-- Go to Settings of the forked repository.
-- Then go to Secrets and Variables, and tap Action in dropdown choices.
-- Tap New Repository Secrets;
-Add this:
+## 使用说明
+- 前往 GitHub 账户设置。在那里创建一个访问令牌。令牌类型应为经典。勾选所有框。并立即复制令牌。因为您将无法再次看到
+- 分叉这个仓库。
+- 前往分叉仓库的设置。
+- 然后前往 Secrets 和 Variables，从下拉选择中选择 Action。
+- 点击 New Repository Secrets；
+添加以下内容：
 `GTOKEN`
-`<paste here your token name>`
-- Then tap Add Secrets.
-- If actions are not enabled, enable them from settings.
-- Go to: this repository > Actions > All workflows> Auto Firmware Dumper > Run workflows > Fill in the requested information.
-- When the process is completed, you will have the following among your repositories: dump_`<brand>`_`<device>`. And if you've approved it, the repository of device trees you've approved. You will understand when you look.
+`<在这里粘贴您的令牌名称>`
+- 然后点击 Add Secrets。
+- 如果动作未启用，请从设置中启用它们。
+- 前往：这个仓库 > Actions > 所有工作流 > Auto Firmware Dumper > 运行工作流 > 填写请求的信息。
+- 当过程完成后，您将在仓库中拥有以下内容：dump_`<品牌>`_`<设备>`。如果您已批准，您将拥有您已批准的设备树仓库。当您查看时，您会明白。
 
-## Small explanations and notes
-- This project is licensed under the `Eclipse Public License 2.0`
-- Any deficiencies or problems on the dump are caused by Stock ROM.
-- I'm still developing it. But still good.
-- If there is a capital letter in the device code name, do not write it that way. Make all letters lowercase.
-- Report problems.
-- Make sure you fill in the information correctly.
-- It is imperative to enter all the desired information.
-- If you want some trees/resources to be loaded separately, you must check the relevant box.
-- 50MB and over files will be deleted. Reason: go maximum file head installation size 50MB. If that happens more, it will fail.
+## 小解释和注意事项
+- 该项目采用 `Eclipse Public License 2.0` 许可证。
+- 转储中的任何不足或问题都是由 Stock ROM 引起的。
+- 我仍在开发它。但仍然很好。
+- 如果设备代码名称中有大写字母，请不要那样写。将所有字母转换为小写。
+- 报告问题。
+- 确保您正确填写信息。
+- 输入所有所需信息是必要的。
+- 如果您希望某些树/资源单独加载，请必须检查相应的框。
+- 50MB 及以上的文件将被删除。原因：最大文件头安装大小为 50MB。如果发生更多，将会失败。
