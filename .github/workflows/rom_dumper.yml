@@ -32,7 +32,7 @@ on:
         type: boolean
 
 jobs:
-  build:
+  dump:
     name: Auto Firmware Dumper
     if: github.event.repository.owner.id == github.event.sender.id
     runs-on: ubuntu-latest
@@ -48,21 +48,16 @@ jobs:
       contents: write
     steps:
     - name: Check Out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       
     - name: Cleanup
       uses: rokibhasansagar/slimhub_actions@main
-      
-    - name: Set Swap Space
-      uses: pierotofy/set-swap-space@master
-      with:
-       swap-size-gb: 12
         
     - name: Update Packages
       run: |
-        sudo apt update
-        sudo apt -y upgrade
-        sudo apt -y install cpio aria2 git python3 neofetch tar gzip
+        sudo apt update \
+        && sudo apt -y upgrade \
+        && sudo apt -y install cpio aria2 git python3 neofetch tar gzip
 
     - name: Setup GithubCLI
       run: |
@@ -126,9 +121,7 @@ jobs:
            cd vendor
         else
            cd system
-           if [ -d system ]; then
-              cd system
-           fi
+           [ -d system ] && cd system
         fi
         codename=$(grep "ro.product.vendor.device=" build.prop | cut -d'=' -f2)
         brand=$(grep "ro.product.vendor.brand=" build.prop | cut -d'=' -f2)
@@ -176,37 +169,16 @@ jobs:
         fi
         sudo rm -rf .git
         echo "Compressing images..."
-        max_size="48000000"
-        if [ -f recovery.img ]; then
-           if [[ $(stat -c %s recovery.img) -gt $max_size ]]; then
-              cp recovery.img /home/Auto-Dumper
-              gzip -f recovery.img
+        max_size=48000000
+        images=("recovery.img" "boot.img" "vendor_boot.img" "init_boot.img" "dtbo.img" "dtb.img")
+        for pf in ${images[@]}; do
+           if [ -f $pf ]; then
+              if [[ $(stat -c %s $pf) -gt $max_size ]]; then
+                 cp $pf /home/Auto-Dumper
+                 gzip -f $pf
+              fi
            fi
-        fi
-        if [ -f boot.img ]; then
-           if [[ $(stat -c %s boot.img) -gt $max_size ]]; then
-              cp boot.img /home/Auto-Dumper
-              gzip -f boot.img
-           fi
-        fi
-        if [ -f vendor_boot.img ]; then
-           if [[ $(stat -c %s vendor_boot.img) -gt $max_size ]]; then
-              cp vendor_boot.img /home/Auto-Dumper
-              gzip -f vendor_boot.img
-           fi
-        fi
-        if [ -f init_boot.img ]; then
-           if [[ $(stat -c %s init_boot.img) -gt $max_size ]]; then
-              cp init_boot.img /home/Auto-Dumper
-              gzip -f init_boot.img
-           fi
-        fi
-        if [ -f dtbo.img ]; then
-           cp dtbo.img /home/Auto-Dumper
-        fi
-        if [ -f dtb.img ]; then
-           cp dtb.img /home/Auto-Dumper
-        fi
+        done
         find /home/Auto-Dumper/DumprX/out -type f -size +50M -delete -exec echo "Deleted: "{} \;
         dat=$(date +%Y%m%d)
         git init
@@ -215,13 +187,8 @@ jobs:
         git commit -s -m "Dump for $brand $codename"
         gh repo create dump_"$brand"_"$codename" --public --description="Dump for $brand $codename " --source=. --remote=origin --push
         cd /home/Auto-Dumper
-        mkdir vnd_project
-        mkdir vnd_project/dump
-        mkdir vnd_project/android
-        mkdir vnd_project/android/device
-        mkdir vnd_project/android/device/"$brand"
-        mkdir vnd_project/android/device/"$brand"/"$codename"
-        cd /home/Auto-Dumper/DumprX/out
+        mkdir -p vnd_project/android/device/"$brand"/"$codename"
+        cd DumprX/out
         if [ -d "$los_dir" ]; then
            mv /home/Auto-Dumper/DumprX/out/lineage-device-tree/* /home/Auto-Dumper/vnd_project/android/device/"$brand"/"$codename"
            rm -rf $los_dir
@@ -304,21 +271,12 @@ jobs:
         version=$(cat version.txt)
         cd twrp-device-tree/$brand/$codename
         dat=$(date +%Y%m%d)
-        if [ -f BoardConfig.mk ]; then
-           git init
-           git branch -M twrp-"$version"-"$dat"
-           git add .
-           git commit -s -m "$codename : TWRP compatible device tree"
-           gh repo create twrp_device_"$brand"_"$codename" --public --description="TWRP compatible tree for $codename " --source=. --remote=origin --push
-        else
-           cd $brand
-           cd $codename
-           git init
-           git branch -M twrp-"$version"-"$dat"
-           git add .
-           git commit -s -m "$codename : TWRP compatible device tree"
-           gh repo create twrp_device_"$brand"_"$codename" --public --description="TWRP compatible tree for $codename " --source=. --remote=origin --push
-        fi
+        [ ! -f BoardConfig.mk ] && cd "$brand"/"$codename"
+        git init
+        git branch -M twrp-"$version"-"$dat"
+        git add .
+        git commit -s -m "$codename : TWRP compatible device tree"
+        gh repo create twrp_device_"$brand"_"$codename" --public --description="TWRP compatible tree for $codename " --source=. --remote=origin --push
       continue-on-error: true
 
     - name: Uploading preview of images
