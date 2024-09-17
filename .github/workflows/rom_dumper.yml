@@ -191,7 +191,6 @@ jobs:
         mkdir vnd_project
         mkdir vnd_project/dump
         mkdir -p vnd_project/android/device/"$brand"/"$codename"
-        cd /home/Auto-Dumper/DumprX/out
         cd DumprX/out
         if [ -d "$los_dir" ]; then
            mv /home/Auto-Dumper/DumprX/out/lineage-device-tree/* /home/Auto-Dumper/vnd_project/android/device/"$brand"/"$codename"
