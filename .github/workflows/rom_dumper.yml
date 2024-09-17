@@ -90,7 +90,6 @@ jobs:
       run: |
         git config --global user.name "${{ env.UN }}"
         git config --global user.email "${{ env.UEM }}"
-        git config --global http.postBuffer 4718592000
         unset GITHUB_TOKEN
         gh auth login --with-token <<< "${{ secrets.GTOKEN }}"
 
@@ -189,6 +188,8 @@ jobs:
         git commit -s -m "Dump for $brand $codename"
         gh repo create dump_"$brand"_"$codename" --public --description="Dump for $brand $codename " --source=. --remote=origin --push
         cd /home/Auto-Dumper
+        mkdir vnd_project
+        mkdir vnd_project/dump
         mkdir -p vnd_project/android/device/"$brand"/"$codename"
         cd DumprX/out
         if [ -d "$los_dir" ]; then
