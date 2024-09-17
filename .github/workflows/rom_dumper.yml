@@ -188,7 +188,13 @@ jobs:
         git commit -s -m "Dump for $brand $codename"
         gh repo create dump_"$brand"_"$codename" --public --description="Dump for $brand $codename " --source=. --remote=origin --push
         cd /home/Auto-Dumper
-        mkdir -p vnd_project/android/device/"$brand"/"$codename"
+        mkdir vnd_project
+        mkdir vnd_project/dump
+        mkdir vnd_project/android
+        mkdir vnd_project/android/device
+        mkdir vnd_project/android/device/"$brand"
+        mkdir vnd_project/android/device/"$brand"/"$codename"
+        cd /home/Auto-Dumper/DumprX/out
         cd DumprX/out
         if [ -d "$los_dir" ]; then
            mv /home/Auto-Dumper/DumprX/out/lineage-device-tree/* /home/Auto-Dumper/vnd_project/android/device/"$brand"/"$codename"
