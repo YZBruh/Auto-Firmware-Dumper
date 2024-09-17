@@ -190,10 +190,7 @@ jobs:
         cd /home/Auto-Dumper
         mkdir vnd_project
         mkdir vnd_project/dump
-        mkdir vnd_project/android
-        mkdir vnd_project/android/device
-        mkdir vnd_project/android/device/"$brand"
-        mkdir vnd_project/android/device/"$brand"/"$codename"
+        mkdir -p vnd_project/android/device/"$brand"/"$codename"
         cd /home/Auto-Dumper/DumprX/out
         cd DumprX/out
         if [ -d "$los_dir" ]; then
