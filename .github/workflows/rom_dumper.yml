@@ -182,11 +182,13 @@ jobs:
         done
         find /home/Auto-Dumper/DumprX/out -type f -size +50M -delete -exec echo "Deleted: "{} \;
         dat=$(date +%Y%m%d)
+        description="Dump for $brand $codename"
+        description=$(echo "$description" | tr -d '\n\r\t')
         git init
         git branch -M dump-"$codename"-"$dat"
         git add .
         git commit -s -m "Dump for $brand $codename"
-        gh repo create dump_"$brand"_"$codename" --public --description="Dump for $brand $codename " --source=. --remote=origin --push
+        gh repo create dump_"$brand"_"$codename" --public --description="$description" --source=. --remote=origin --push --debug
         cd /home/Auto-Dumper
         mkdir vnd_project
         mkdir vnd_project/dump
