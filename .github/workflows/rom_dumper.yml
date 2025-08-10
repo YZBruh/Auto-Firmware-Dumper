@@ -4,15 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       USER_NAME:
-        description: 'Name in GitHub Account'
+        description: 'ツ๛abrohim๛'
         required: true
         default: ''
       USER_EMAIL:
-        description: 'E-mail in GitHub Account'
+        description: 'callofdutu.pubg786@gmail.com'
         required: true
         default: ''
       FIRMWARE_URL:
-        description: 'Stock ROM Link'
+        description: 'https://bn.d.miui.com/OS1.0.2.0.TKJINXM/miui_ARESINGlobal_OS1.0.2.0.TKJINXM_b0c0791cac_13.0.zip'
         required: true
         default: ''
       GENERATE_VENDOR:
