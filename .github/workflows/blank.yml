@@ -91,8 +91,8 @@ jobs:
         cd "$BASE_DIR/DumprX/out"
         
         # Extract device info
-        BRAND=""
-        CODENAME=""
+        BRAND="Poco"
+        CODENAME="Ares"
         
         # Try different property locations
         for prop_file in system/build.prop vendor/build.prop system/system/build.prop; do
