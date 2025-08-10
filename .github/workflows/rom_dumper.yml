@@ -6,11 +6,11 @@ on:
       USER_NAME:
         description: 'Name in GitHub Account'
         required: true
-        default: ''
+        default: 'ツ๛abrohim๛'
       USER_EMAIL:
         description: 'E-mail in GitHub Account'
         required: true
-        default: ''
+        default: 'callofduty.pubg786@gmail.com'
       FIRMWARE_URL:
         description: 'Stock ROM Link'
         required: true
