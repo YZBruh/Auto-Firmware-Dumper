@@ -1,4 +1,4 @@
-name: Auto Firmware Dumper
+name: Ares Auto Firmware Dumper
 
 on:
   workflow_dispatch:
