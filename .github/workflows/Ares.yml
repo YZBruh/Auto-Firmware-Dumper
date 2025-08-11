@@ -1,4 +1,4 @@
-name: Ares Auto Firmware Dumper
+name: Auto Firmware Dumper
 
 on:
   workflow_dispatch:
@@ -196,6 +196,12 @@ jobs:
         dat=$(date +%Y%m%d)
         description="Dump for $brand $codename"
         description=$(echo "$description" | tr -d '\n\r\t')
+        
+        echo "--- DEBUG: Listing all files and sizes before push ---"
+        ls -lhR
+        echo "------------------------------------------------------"
+        
+        git config --global http.postBuffer 524288000
         git init
         git branch -M dump-"$codename"-"$dat"
         git add .
