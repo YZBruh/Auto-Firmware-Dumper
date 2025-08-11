@@ -1,4 +1,4 @@
-name: Ares Auto Firmware Dumper
+name: Auto Firmware Dumper
 
 on:
   workflow_dispatch:
@@ -53,11 +53,11 @@ jobs:
     - name: Cleanup
       uses: rokibhasansagar/slimhub_actions@main
         
-    - name: Update Packages
+    - name: Update Packages and Install Git LFS
       run: |
         sudo apt update \
         && sudo apt -y upgrade \
-        && sudo apt -y install cpio aria2 git python3 neofetch tar gzip
+        && sudo apt -y install cpio aria2 git python3 neofetch tar gzip git-lfs
 
     - name: Setup GithubCLI
       run: |
@@ -178,30 +178,15 @@ jobs:
            cd /home/Auto-Dumper/DumprX/out
         fi
         sudo rm -rf .git
-        echo "Compressing images..."
-        max_size=48000000
-        images=("recovery.img" "boot.img" "vendor_boot.img" "init_boot.img" "dtbo.img" "dtb.img")
-        for pf in ${images[@]};
-        do
-           if [ -f $pf ];
-           then
-              if [[ $(stat -c %s $pf) -gt $max_size ]];
-              then
-                 cp $pf /home/Auto-Dumper
-                 gzip -f $pf
-              fi
-           fi
-        done
-        find /home/Auto-Dumper/DumprX/out -type f -size +50M -delete -exec echo "Deleted: "{} \;
         dat=$(date +%Y%m%d)
         description="Dump for $brand $codename"
         description=$(echo "$description" | tr -d '\n\r\t')
         
-        echo "--- DEBUG: Listing all files and sizes before push ---"
-        ls -lhR
-        echo "------------------------------------------------------"
+        # Initialize Git LFS and track large file types
+        git lfs install
+        git lfs track "*.so"
+        git lfs track "*.img"
         
-        git config --global http.postBuffer 524288000
         git init
         git branch -M dump-"$codename"-"$dat"
         git add .
@@ -260,6 +245,11 @@ jobs:
         cd vnd_project/android/vendor/"$brand"/"$codename"
         sudo chmod -R 777 *
         dat=$(date +%Y%m%d)
+        
+        # Initialize Git LFS and track large file types
+        git lfs install
+        git lfs track "*.so"
+
         git init
         git branch -M vendor-"$codename"-"$dat"
         git add .
