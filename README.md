@@ -1,4 +1,5 @@
 # Auto Firmware Dumper
+<<<<<<< HEAD
 It allows you to create ROM dumps using GitHub actions. It uses [DumprX](https://github.com/DumprX/DumprX) when creating dumps.
 
 ## Requirements
@@ -30,3 +31,8 @@ Add this:
 - It is imperative to enter all the desired information.
 - Set the action entries to `Okay` for the trees you want to be loaded separately. If you don't want `I do not want`.
 - 50MB and over files will be compressed or deleted. Reason: go maximum file head installation size 50MB. If that happens more, it will fail.
+=======
+It allows you to create ROM dumps using GitHub actions. It uses [DumprX](https://github.com/DumprX/DumprX) when creating dumps.  
+
+# **THIS BRANCH ONLY FOR DEVS**
+>>>>>>> 6380ad28ccb5936a98658c1387636a5fcf4aa9e4
