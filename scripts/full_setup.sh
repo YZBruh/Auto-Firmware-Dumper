@@ -25,7 +25,7 @@ sudo apt -y install \
     &>xerr || xerror "Cannot install required packages!"
 
 echo "Installing DumprX..."
-git clone https://github.com/DumprX/DumprX &>xerr }
+git clone https://github.com/DumprX/DumprX &>xerr \
   || xerror "Cannot clone DumprX!"
 cd DumprX && chmod 755 *.sh
 bash setup.sh && cd ..
