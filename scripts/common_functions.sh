@@ -22,7 +22,7 @@ dump_props() {
   [ $# -lt 1 ] && error "Missing: working directory"
   cd "$1"
 
-  if [ -d product ]; then props=product/build.prop
+  if [ -d system ]; then if [ -d system/system ]; then props=system/system/build.prop; else props=system/build.prop; fi
   elif [ -d vendor ]; then props=vendor/build.prop
   fi
 

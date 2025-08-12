@@ -33,6 +33,7 @@ bash setup.sh && cd ..
 echo "Installing twrpdtgen and aospdtgen"
 pip3 install aospdtgen &>xerr || xerror
 pip3 install twrpdtgen &>xerr || xerror
+pip3 install uv &>xerr || xerror
 
 echo "Installing extract utils"
 mkdir -p android/{tools,prebuilt,device}
