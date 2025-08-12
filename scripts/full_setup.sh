@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-. common_functions.sh
+. scripts/common_functions.sh
 
 THIS="$0"
 
