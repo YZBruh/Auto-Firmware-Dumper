@@ -21,8 +21,10 @@ compress() {
 dump_props() {
   [ $# -lt 1 ] && error "Missing: working directory"
   cd "$1"
-	
-  local props=vendor/build.prop
+
+  if [ -d system ]; then if [ -d system/system ]; then props=system/system/build.prop; else props=system/build.prop; fi
+  elif [ -d vendor ]; then props=vendor/build.prop
+  fi
 
   local brand="$(get_prop ro.product.brand $props)"
   [ -z "$brand" ] && brand="$(get_prop ro.vendor.product.brand $props)"
