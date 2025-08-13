@@ -9,7 +9,7 @@ WORK_DIR="$1"
 
 cd "$WORK_DIR" || exit 1;
 
-echo "Updating and upgrading all packages..."
+echo "Updating repositories and upgrading all packages..."
 sudo apt -y update &>xerr || xerror "Cannot update packages!"
 sudo apt -y upgrade &>xerr || xerror "Cannot upgrade packages!"
 
@@ -33,7 +33,6 @@ bash setup.sh && cd ..
 echo "Installing twrpdtgen and aospdtgen"
 pip3 install aospdtgen &>xerr || xerror
 pip3 install twrpdtgen &>xerr || xerror
-pip3 install uv &>xerr || xerror
 
 echo "Installing extract utils"
 mkdir -p android/{tools,prebuilt,device}

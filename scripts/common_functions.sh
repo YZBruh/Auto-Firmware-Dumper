@@ -17,10 +17,6 @@ dump_props() {
   [ $# -lt 1 ] && error "Missing: working directory"
   cd "$1"
 
-  if [ -d system ]; then if [ -d system/system ]; then props=system/system/build.prop; else props=system/build.prop; fi
-  elif [ -d vendor ]; then props=vendor/build.prop
-  fi
-
   brand=$(grep -m1 -oP "(?<=^ro.product.brand=).*" -hs {system,system/system,vendor}/build*.prop | head -1)
   [[ -z "${brand}" ]] && brand=$(grep -m1 -oP "(?<=^ro.product.brand.sub=).*" -hs system/system/euclid/my_product/build*.prop)
   [[ -z "${brand}" ]] && brand=$(grep -m1 -oP "(?<=^ro.product.vendor.brand=).*" -hs vendor/build*.prop | head -1)

@@ -77,10 +77,10 @@ jobs:
       - name: Upload ROM Dump
         run: |
           . scripts/common_functions.sh
-          ls $PWD/workdir/DumprX/out
           dump_props_to_env_file $PWD/workdir/DumprX/out
           . env
           cd workdir/DumprX/out
+          ls $PWD/workdir/DumprX/out
 
           lineageDir="lineage-device-tree"
           teamWinDir="twrp-device-tree"
