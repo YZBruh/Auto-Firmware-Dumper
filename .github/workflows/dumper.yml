@@ -77,6 +77,7 @@ jobs:
       - name: Upload ROM Dump
         run: |
           . scripts/common_functions.sh
+          ls $PWD/workdir/DumprX/out
           dump_props_to_env_file $PWD/workdir/DumprX/out
           . env
           cd workdir/DumprX/out
@@ -103,7 +104,7 @@ jobs:
           bash extract-files.sh ${{ github.workspace }}/DumprX/out
           cd ../../vendor/$BRAND/$DEVICE
           chmod -R 755 *
-          ${{ github.workspace }}/scripts/upload_to_repo.sh "$PWD" vendor
+          bash ${{ github.workspace }}/scripts/upload_to_repo.sh "$PWD" vendor
           sudo rm -rf ${{ github.workspace }}/workdir
         working-directory: ${{ github.workspace }}
 
@@ -111,7 +112,7 @@ jobs:
         if: env.LOT == 'true'
         run: |
           . env
-          bash ../upload_to_repo.sh "$PWD/lineage-device-tree" lineage lineage_device
+          bash ${{ github.workspace }}/scripts/upload_to_repo.sh "$PWD/lineage-device-tree" lineage lineage_device
         working-directory: ${{ github.workspace }}
         continue-on-error: true
 
@@ -119,6 +120,6 @@ jobs:
         if: env.TWT == 'true'
         run: |
           . env
-          bash ../upload_to_repo.sh "$PWD/twrp-device-tree/$BRAND/$CODENAME" twrp recovery_device
+          bash ${{ github.workspace }}/scripts/upload_to_repo.sh "$PWD/twrp-device-tree/$BRAND/$CODENAME" twrp recovery_device
         working-directory: ${{ github.workspace }}
         continue-on-error: true
